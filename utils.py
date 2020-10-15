@@ -4,6 +4,7 @@ from torchvision import transforms
 import torchvision.transforms.functional as tf
 import random
 from PIL import Image
+import numpy as np
 
 IMAGE_HEIGHT, IMAGE_WIDTH = 80, 160
 
@@ -144,7 +145,7 @@ class RandomHorizontalFlip(object):
         image, target = sample['image'], sample['target']
         if random.random() > 0.5:
             image = tf.hflip(image)
-            if target != 0:
+            if target[0] != 0:
                 target = - target  
         return {'image': image, 'target': target}
 
@@ -202,6 +203,6 @@ class ToTensor(object):
 
     def __call__(self, sample):
         image, target = sample['image'], sample['target']
-        target = torch.tensor(float(target))
+        target = torch.tensor(target).float()
         image = tf.to_tensor(image)
         return {'image': image, 'target': target}

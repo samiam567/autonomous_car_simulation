@@ -46,7 +46,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(64 * 3 * 13, 100)
         self.fc2 = nn.Linear(100, 50)
         self.fc3 = nn.Linear(50, 10)
-        self.fc4 = nn.Linear(10, 1)
+        self.fc4 = nn.Linear(10, 2)
 
     def forward(self, x):
         x = F.elu(self.conv1(x))           
@@ -193,6 +193,7 @@ class Model():
                 else:
                     outputs = self.net(inputs)
 
+
                 # Remove one dimension
                 outputs = outputs.squeeze()
                 loss = criterion(outputs, labels)
@@ -297,12 +298,14 @@ class Model():
         else:
             outputs = self.net(inputs)
 
+        print(outputs)
+
         # print('Control tensor: %.6f ' % (outputs.item()))
 
         # set train mode
         self.net.train()
 
-        return outputs.item()
+        return outputs
 
 ########################################################################
 # Main method

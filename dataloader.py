@@ -41,14 +41,27 @@ class SimulationDataset(Dataset):
             end = len(self.data)
 
         self.image_paths = np.array(self.data.iloc[start:end, 0:3])
-        self.targets = np.array(self.data.iloc[start:end, 3]) 
+        steering_angles = np.array(self.data.iloc[start:end, 3]) 
+        speeds = np.array(self.data.iloc[start:end, 6])
+        speeds /= speeds.max()
+
+        # targets = [[angle, speed]
+        #            [angle, speed]
+        #            [angle, speed]
+        #                  ...     ]
+        self.targets = np.array([steering_angles, speeds]).transpose()
 
         # Preprocess and filter data
         self.targets = gaussian_filter1d(self.targets, 2)      
         
         bias = 0.03
-        self.image_paths = [image_path for image_path, target in zip(self.image_paths, self.targets) if abs(target) > bias]
-        self.targets = [target for target in self.targets if abs(target) > bias]
+        # self.image_paths = [image_path for image_path, target in zip(self.image_paths, self.targets) if abs(target) > bias]
+        # self.targets = [target for target in self.targets if abs(target) > bias]
+        # old pgebert code which is terribly slow but probably doesn't make a difference unless dataset is very large
+
+        good_rows = self.targets[:,0] > bias
+        self.image_paths = self.image_paths[good_rows]
+        self.targets = self.targets[good_rows]
 
     def __getitem__(self, index):
 
