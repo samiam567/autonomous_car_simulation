@@ -46,8 +46,8 @@ def telemetry(sid, data):
         # Compute steering angle of the car    
         image = Image.open(BytesIO(base64.b64decode(data["image"])))
         model_output = model.predict(image, preloaded=True)
-        steering_angle = model_output[0][0]
-        speed_target = model_output[0][1] * 60 # multiply by max speed since it was previously normalized
+        steering_angle = model_output[0][0].item()
+        speed_target = model_output[0][1].item() * 60 # multiply by max speed since it was previously normalized
         # Compute speed
         # speed_target = 50 - abs(steering_angle) / 0.5 * 10
         # throttle = 0.2 - abs(steering_angle) / 0.4 * 0.15
