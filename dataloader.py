@@ -52,14 +52,14 @@ class SimulationDataset(Dataset):
         self.targets = np.array([steering_angles, speeds]).transpose()
 
         # Preprocess and filter data
-        self.targets = gaussian_filter1d(self.targets, 2)      
+        # self.targets = gaussian_filter1d(self.targets[:,0], 2)      
         
         bias = 0.03
         # self.image_paths = [image_path for image_path, target in zip(self.image_paths, self.targets) if abs(target) > bias]
         # self.targets = [target for target in self.targets if abs(target) > bias]
         # old pgebert code which is terribly slow but probably doesn't make a difference unless dataset is very large
 
-        good_rows = self.targets[:,0] > bias
+        good_rows = abs(self.targets[:,0]) > bias
         self.image_paths = self.image_paths[good_rows]
         self.targets = self.targets[good_rows]
 

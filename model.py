@@ -43,8 +43,8 @@ class Net(nn.Module):
         self.conv5 = nn.Conv2d(64, 64, 3)
         self.pool = nn.MaxPool2d(2, 2)
         self.drop = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(64 * 3 * 13, 100)
-        self.fc2 = nn.Linear(100, 50)
+        self.fc1 = nn.Linear(64 * 3 * 13, 200)
+        self.fc2 = nn.Linear(200, 50)
         self.fc3 = nn.Linear(50, 10)
         self.fc4 = nn.Linear(10, 2)
 
@@ -195,7 +195,8 @@ class Model():
 
 
                 # Remove one dimension
-                outputs = outputs.squeeze()
+                # print(outputs)
+                # outputs = outputs.squeeze()
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
