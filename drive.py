@@ -47,11 +47,12 @@ def telemetry(sid, data):
         image = Image.open(BytesIO(base64.b64decode(data["image"])))
         model_output = model.predict(image, preloaded=True)
         steering_angle = model_output[0][0].item()
-        speed_target = model_output[0][1].item() * 60 # multiply by max speed since it was previously normalized
+        speed_target = model_output[0][1].item()
         # Compute speed
         # speed_target = 50 - abs(steering_angle) / 0.5 * 10
         # throttle = 0.2 - abs(steering_angle) / 0.4 * 0.15
-        throttle = (speed_target - speed) * 0.5
+        # throttle = (speed_target - speed) * 0.5
+        throttle = speed_target
         print("network prediction -> (steering angle: {:.3f}, throttle: {:.3f})".format(steering_angle, throttle))
 
         send_control(steering_angle, throttle)

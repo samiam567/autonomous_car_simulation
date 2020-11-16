@@ -43,24 +43,26 @@ class Net(nn.Module):
         self.conv5 = nn.Conv2d(64, 64, 3)
         self.pool = nn.MaxPool2d(2, 2)
         self.drop = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(64 * 3 * 13, 200)
-        self.fc2 = nn.Linear(200, 50)
-        self.fc3 = nn.Linear(50, 10)
-        self.fc4 = nn.Linear(10, 2)
+        self.fc1 = nn.Linear(64 * 3 * 13, 300)
+        self.fc2 = nn.Linear(300, 150)
+        self.fc3 = nn.Linear(150, 50)
+        self.fc4 = nn.Linear(50, 10)
+        self.fc5 = nn.Linear(10, 2)
 
     def forward(self, x):
-        x = F.elu(self.conv1(x))           
-        x = F.elu(self.conv2(x))
-        x = F.elu(self.conv3(x))
-        x = F.elu(self.conv4(x))
-        x = F.elu(self.conv5(x))
+        x = F.relu(self.conv1(x))           
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+        x = F.relu(self.conv5(x))
         x = self.drop(x)
         # print(x.size())
         x = x.view(-1, 64 * 3 * 13)
-        x = F.elu(self.fc1(x))
-        x = F.elu(self.fc2(x))
-        x = F.elu(self.fc3(x))
-        x = self.fc4(x)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.relu(self.fc4(x))
+        x = self.fc5(x)
         return x
 
 class Model():    
@@ -80,9 +82,9 @@ class Model():
         cfg.auto_plot = True
         cfg.clean_start = False
         cfg.batch_size = 100
-        cfg.test_rate = 10
+        cfg.test_rate = 2
         cfg.test_epochs = 1
-        cfg.train_epochs = 400
+        cfg.train_epochs = 1000
         cfg.optimizer = 'adam'
         cfg.cuda = False
 
@@ -152,6 +154,7 @@ class Model():
     def train(self):
 
         test_res, tmp_res, best_epoch = 0, 0, 0
+        self.loadModel()
 
         #set train mode
         self.net.train()
@@ -260,6 +263,7 @@ class Model():
             test_loss = running_loss / (len(self.testloader) * self.cfg.test_epochs) 
 
         print('MSE of the network on the testset: %.6f' % (test_loss))
+        self.loadData()
         # set train mode
         self.net.train()
 

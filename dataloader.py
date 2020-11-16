@@ -17,6 +17,8 @@ import utils as utils
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter1d
 
+import random
+
 class SimulationDataset(Dataset):
     """Dataset wrapping input and target tensors for the driving simulation dataset.
 
@@ -33,12 +35,12 @@ class SimulationDataset(Dataset):
 
         # First column contains the middle image paths
         # Fourth column contains the steering angle
-        start = 0
-        end = int(4 / 5 * len(self.data))
+        start = int(random.random() * 1/5 * len(self.data))
+        end = int(start + 4/5 * len(self.data))
 
-        if (set == "test"):
-            start = end 
-            end = len(self.data)
+        # if (set == "test"):
+        #     start = end 
+        #     end = len(self.data)
 
         self.image_paths = np.array(self.data.iloc[start:end, 0:3])
         steering_angles = np.array(self.data.iloc[start:end, 3]) 
@@ -54,7 +56,7 @@ class SimulationDataset(Dataset):
         # Preprocess and filter data
         # self.targets = gaussian_filter1d(self.targets[:,0], 2)      
         
-        bias = 0.03
+        bias = 0.00
         # self.image_paths = [image_path for image_path, target in zip(self.image_paths, self.targets) if abs(target) > bias]
         # self.targets = [target for target in self.targets if abs(target) > bias]
         # old pgebert code which is terribly slow but probably doesn't make a difference unless dataset is very large
