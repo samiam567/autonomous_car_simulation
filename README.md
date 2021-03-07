@@ -1,3 +1,14 @@
+# Usage
+
+It's recommended to use [poetry](https://python-poetry.org/) to run this project. To install poetry, follow the steps at <https://python-poetry.org/docs/#installation>.
+
+Next, run these commands:
+
+- `poetry update` (may take a while)
+- `poetry shell`
+    - this puts you in a new shell with a different python environment.
+    - you can exit the shell by pressing Ctrl-C, but make sure to do all development in the shell.
+
 # Autonomous Car Simulation (in progress)
 
 [![project in progress](https://img.shields.io/badge/state-in%20progress-blue.svg)]()
