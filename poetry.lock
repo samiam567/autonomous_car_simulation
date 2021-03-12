@@ -347,8 +347,8 @@ watchdog = ["watchdog"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
-content-hash = "1119ebc3bca88cb144e1dc05cc408d24dcf059e44c2e78cee5b3fbb94c86cd40"
+python-versions = "^3.8"
+content-hash = "06db59c6d18b10b61d6a4c2c4c3307b7be542394e7f5c8da6dab300ce9a5f6b7"
 
 [metadata.files]
 bidict = [

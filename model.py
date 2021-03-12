@@ -46,8 +46,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(64 * 3 * 13, 300)
         self.fc2 = nn.Linear(300, 150)
         self.fc3 = nn.Linear(150, 50)
-        self.fc4 = nn.Linear(50, 10)
-        self.fc5 = nn.Linear(10, 2)
+        self.fc4 = nn.Linear(50, 30)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))           
@@ -61,8 +60,7 @@ class Net(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
-        x = F.relu(self.fc4(x))
-        x = self.fc5(x)
+        x = self.fc4(x)
         return x
 
 class Model():    
@@ -84,7 +82,7 @@ class Model():
         cfg.batch_size = 100
         cfg.test_rate = 2
         cfg.test_epochs = 1
-        cfg.train_epochs = 1000
+        cfg.train_epochs = 100
         cfg.optimizer = 'adam'
         cfg.cuda = False
 
@@ -145,7 +143,9 @@ class Model():
 
     # Load model from file system
     def loadModel(self):
-        self.net.load_state_dict(torch.load('model.pth'))
+        if os.path.isfile("./model.pth"):
+            self.net.load_state_dict(torch.load('model.pth'))
+            print("Weights loaded!")
 
 
     ########################################################################
@@ -154,6 +154,8 @@ class Model():
     def train(self):
 
         test_res, tmp_res, best_epoch = 0, 0, 0
+
+        # load model if we got it (probably not)
         self.loadModel()
 
         #set train mode

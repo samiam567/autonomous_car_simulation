@@ -1,3 +1,7 @@
+# vscode and vim stuff
+.vscode/
+.vim/
+
 # Data 
 /IMG
 *.pth
