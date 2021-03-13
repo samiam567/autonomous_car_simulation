@@ -4,7 +4,7 @@ import torch
 import torchvision
 from torchvision import datasets, models, transforms
 
-from torch.autograd import Variable
+from torch.autograd import Variable 
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -84,7 +84,7 @@ class Model():
         cfg.test_epochs = 1
         cfg.train_epochs = 100
         cfg.optimizer = 'adam'
-        cfg.cuda = False
+        cfg.cuda = True
 
         self.cfg = cfg
         self.log = Logger(cfg)
