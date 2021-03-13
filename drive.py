@@ -45,17 +45,44 @@ def telemetry(sid, data):
         speed = float(data["speed"])
         # Compute steering angle of the car    
         image = Image.open(BytesIO(base64.b64decode(data["image"])))
-        model_output = model.predict(image, preloaded=True)
-        steering_angle = model_output[0][0].item()
-        speed_target = model_output[0][1].item()
-        # Compute speed
-        # speed_target = 50 - abs(steering_angle) / 0.5 * 10
-        # throttle = 0.2 - abs(steering_angle) / 0.4 * 0.15
-        # throttle = (speed_target - speed) * 0.5
-        throttle = speed_target
-        print("network prediction -> (steering angle: {:.3f}, throttle: {:.3f})".format(steering_angle, throttle))
 
-        send_control(steering_angle, throttle)
+
+
+        '''
+        steering_angle = model.predict(image, preloaded=True)
+        # Compute speed
+        speed_target = 25 - abs(steering_angle) / 0.4 * 10
+        # throttle = 0.2 - abs(steering_angle) / 0.4 * 0.15
+        throttle = (speed_target - speed) * 0.1
+        print("network prediction -> (steering angle: {:.3f}, throttle: {:.3f})".format(steering_angle, throttle))
+        '''
+
+
+        # get model prediction
+        waypoints = model.predict(image, preloaded=True); # x,y,z,x,y,z,x,y,z...
+        
+
+
+        '''
+        NOTE: Potential one-off errors here!
+        '''
+
+
+        NUM_VALS_IN_WAYPNT = 3;
+
+        waypoints_string = "";
+        #parse waypoints to a string
+        for i in range(0,len(waypoints/NUM_VALS_IN_WAYPNT)): # "x,y,z"
+            waypoints_string = waypoints_string + ",";
+
+            for a in range(0,NUM_VALS_IN_WAYPNT):
+                waypoints_string = waypoints_string + str(waypoints[NUM_VALS_IN_WAYPNT*i+a]) + " "; # replace the space with a comma to do x,y,z,x,y,z,x,y,z
+
+            
+        # waypoints_string should equal ",x y z, x y z, x y z"  note the comma at the beginning which we take out in the send_control call
+        
+
+        send_control(steering_angle, throttle, waypoints_string[1:]);
 
 @sio.on('connect')
 def connect(sid, environ):
