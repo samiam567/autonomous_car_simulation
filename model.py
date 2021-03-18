@@ -100,7 +100,6 @@ class Model():
     ########################################################################
     # Load data
     # ^^^^^^^^^^^^^^^^^^^^
-
     def loadData(self):       
         
         trainset = SimulationDataset("train", transforms=transforms.Compose([                 

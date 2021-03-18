@@ -82,7 +82,7 @@ def telemetry(sid, data):
         # waypoints_string should equal ",x y z, x y z, x y z"  note the comma at the beginning which we take out in the send_control call
         
 
-        send_control(steering_angle, throttle, waypoints_string[1:]);
+        send_control(steering_angle, throttle);
 
 @sio.on('connect')
 def connect(sid, environ):
